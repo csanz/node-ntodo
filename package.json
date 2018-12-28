@@ -12,7 +12,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "http://github.com/csanz/ntodo.git"
+    "url": "https://github.com/csanz/node-ntodo"
   },
   "engines": {
     "node": ">=8.9.4"
