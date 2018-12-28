@@ -45,3 +45,6 @@ function help(){
   console.log("\n")
 }
 run();
+
+//  TODO: Ok, of course add file watcher ;)
+//  TODO: When a task is completed, remove from code and add to a history file and include who finished it
