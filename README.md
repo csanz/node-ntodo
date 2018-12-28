@@ -4,7 +4,7 @@ ntodo
 A simple CLI TODO parser for the lazy coder
 
 
-![Screenshot](https://github.com/csanz/ntodo/raw/master/misc/sample.png)
+![Screenshot](https://github.com/csanz/node-ntodo/raw/master/misc/sample.png)
 
 Installation
 ------------
