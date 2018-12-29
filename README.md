@@ -2,7 +2,7 @@
 
 A simple CLI TODO parser for the lazy coder
 
-![Screenshot](https://github.com/csanz/node-ntodo/raw/master/misc/sample.png)
+![Screenshot](https://raw.githubusercontent.com/csanz/node-ntodo/master/misc/sample.png?c=1)
 
 ## Installation
 
