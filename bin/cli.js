@@ -1,41 +1,91 @@
 #!/usr/bin/env node
 
 var os      = require('os')
-  , ntodo   = require('./ntodo')
+  , app     = require('./app')({})
   , opt     = require('optimist').argv
   , colors  = require('colors')
-  , sys     = require('sys');
+  , sys     = require('util')
+  , path    = require('path')
+  , resolve = require('path').resolve
     
-/**
- * Run 
- *
- * @api private
- */ 
+// Run the app
+
 run = function() {
-  path = opt._;
-  if (opt._.length === 0) {
-      opt._ = null;
-  }
+
   opt.help = opt.help || opt.h;
   opt.path = opt.path || opt.p;
-  if (opt.help) {
+
+  // Empty, run search
+
+  if(!opt._.length &&
+     !opt.help &&
+     !opt.path){
+
+    // Run search
+
+    app.search("./", complete);
+
+    return;
+  }
+
+  // Path option, run with path
+
+  if(opt.path){
+
+    if(opt.path == true) return error("Missing Path!");
+
+    // Run search
+
+    app.search(opt.path, complete);
+
+    return;
+  }
+
+  if(opt.help){
+
+    // Run search
+
+    //app.search(opt.path, complete)
+
     help();
-  }else{
-    if (path!="" || opt.path) {
-      dir = path[0] || opt.path;
-      if (dir[0]==null && opt.path==true) 
-        return console.log("\t\nmissing text! try again\n".red.bold);
-       ntodo.search(dir)
-    }else{
-      help();
+
+    return;
+  }
+
+}
+
+// Complete, display
+
+function complete(err, results){
+
+  if(err) return error(err.toString())
+
+  // TODO: Add the ability to remove the TODO line... more options
+  // TODO: Add the ability to connect your todo app or Github
+
+  console.log("\n\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\".green)
+  console.log("\\\\\\\\\\\\\  Your TODOs:".green);
+  console.log("\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n".green)
+
+  for(var _result in results){
+
+    for(var _todo in results[_result].todos){
+
+      // Print out the TODO
+
+      console.log("Line %s: %s".cyan
+        , results[_result].todos[_todo].line_number
+        , results[_result].todos[_todo].line);
     }
+
+    // Display the file and full path
+
+    console.log('\n>>> Inside: '.grey + path.relative("./", results[_result].file_name).grey + "\n");
   }
 }
-/**
- * Show help
- *
- * @api private
- */
+
+// Help
+
 function help(){
   console.log("\nntodo <PATH>\n".green)
   console.log("\tExamples:".white.bold)
@@ -44,7 +94,11 @@ function help(){
   console.log("\t\tntodo -p ../".green)
   console.log("\n")
 }
-run();
 
-//  TODO: Ok, of course add file watcher ;)
-//  TODO: When a task is completed, remove from code and add to a history file and include who finished it
+// Error 
+
+function error(msg){
+  console.log("\n", msg.red, "\n")
+}
+
+run();

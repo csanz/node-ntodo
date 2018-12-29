@@ -19,10 +19,23 @@
   },
   "dependencies": {
     "optimist": ">= 0.6.1",
-    "colors": "*"
+    "colors": "*",
+    "mocha": "5.2.0",
+    "klaw": "3.0.0",
+    "through2": "3.0.0",
+    "async": "3.0.1-0",
+    "line-reader": "0.4.0",
+    "fs-extra": "^7.0.1"
+  },
+  "directories": {
+    "test": "./test"
   },
   "main": "./bin/ntodo",
   "bin": {
     "ntodo": "./bin/cli.js"
+  },
+  "scripts": {
+    "start": "node bin/cli.js",
+    "test": "mocha"
   }
 }

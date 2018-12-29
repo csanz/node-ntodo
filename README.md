@@ -1,21 +1,30 @@
-ntodo
-=====
+# ntodo
 
 A simple CLI TODO parser for the lazy coder
 
-
 ![Screenshot](https://github.com/csanz/node-ntodo/raw/master/misc/sample.png)
 
-Installation
-------------
+## Installation
 
-With [npm](http://github.com/isaacs/npm):
+``` bash
+  $ [sudo] npm install ntodo -g
+```
 
-    npm install -i ntodo
+## Usage
 
-CLI
----
+There are two ways to use ntodo: through the command line or by using ntodo in your code. **Note:** If you are using ntodo _programatically_ see example below.
 
+### Command Line Usage
+
+**Example**
+
+```
+  $ ntodo ./
+```
+
+**Options**
+```
+    $ ntodo --help
     Usage: ntodo [Options]
     
     [Options]
@@ -34,11 +43,18 @@ CLI
     
     ntodo . | grep "jade"
     ntodo . | grep "modules"
-    ntodo . | grep "api"    
+    ntodo . | grep "api"   
+``` 
 
-Todo
-------------
+### Programatically
+You can also use ntodo from inside your own node.js code.
 
-  * Integrate with Github
-  * When a task is completed, remove from code and add to a history file and include who finished it (update github hehe!)
-  * Include email notification if the project includes a notify.json at the root (for whoever wants to be notified)
+``` js
+  var _ntodo = require('ntodo');
+
+  var results = (results) => {console.log("results: %s", results)}
+
+  _ntodo.search("./", results);
+```
+
+
