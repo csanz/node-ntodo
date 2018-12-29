@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 var os      = require('os')
-  , app     = require('./app')({})
+  , ntodo   = require('./app')()
   , opt     = require('optimist').argv
   , colors  = require('colors')
   , sys     = require('util')
@@ -21,12 +21,23 @@ run = function() {
      !opt.help &&
      !opt.path){
 
-    // Run search
-
-    app.search("./", complete);
+    ntodo.search("./", complete);
 
     return;
   }
+
+  // Only one arument, assume is a path
+
+  if(opt._ &&
+    !opt.path &&
+    !opt.help){
+
+    console.log("hi", opt._[0])
+
+    ntodo.search(opt._[0], complete);
+
+    return;
+  } 
 
   // Path option, run with path
 
@@ -34,18 +45,14 @@ run = function() {
 
     if(opt.path == true) return error("Missing Path!");
 
-    // Run search
-
-    app.search(opt.path, complete);
+    ntodo.search(opt.path, complete);
 
     return;
   }
 
+  // Show help
+
   if(opt.help){
-
-    // Run search
-
-    //app.search(opt.path, complete)
 
     help();
 
@@ -63,9 +70,9 @@ function complete(err, results){
   // TODO: Add the ability to remove the TODO line... more options
   // TODO: Add the ability to connect your todo app or Github
 
-  console.log("\n\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\".green)
-  console.log("\\\\\\\\\\\\\  Your TODOs:".green);
-  console.log("\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n".green)
+  console.log("\n\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\".gray)
+  console.log("\\\\\\\\\\\\\  Your TODOs:".gray);
+  console.log("\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n".gray)
 
   for(var _result in results){
 
@@ -80,19 +87,21 @@ function complete(err, results){
 
     // Display the file and full path
 
-    console.log('\n>>> Inside: '.grey + path.relative("./", results[_result].file_name).grey + "\n");
+    console.log('\n>>> Inside: '.grey + results[_result].file_name.grey + "\n");
   }
 }
 
 // Help
 
 function help(){
+
   console.log("\nntodo <PATH>\n".green)
   console.log("\tExamples:".white.bold)
   console.log("\t\tntodo .".green)
   console.log("\t\tntodo ../".green)
   console.log("\t\tntodo -p ../".green)
   console.log("\n")
+
 }
 
 // Error 

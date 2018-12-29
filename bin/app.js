@@ -14,8 +14,7 @@ var _items     = []
   , _results   = []
   , mod        = {};
 
-module.exports = function (options) {
-  _options = options;
+module.exports = function () {
   return mod
 }
 
@@ -83,32 +82,37 @@ mod.search = function(directory, callback){
     })
     .on('end', function () {
 
-      // Loop and create pending promises for each file 
+      try{
+        // Loop and create pending promises for each file 
 
-      for(var _item in _items)
-        _promises.push(get_todos(_items[_item]))
+        for(var _item in _items)
+          _promises.push(get_todos(_items[_item]))
 
-        // Display results from promises
+          // Display results from promises
 
-        var print_results = 
-          (results) => {
+          var print_results = 
+            (results) => {
 
-            clean_up_todos(
-                results
-              , complete)
-        }
+              clean_up_todos(
+                  results
+                , complete)
+          }
 
-      // Execute all pending promises
+        // Execute all pending promises
 
-      Promise.all(_promises).then(print_results);
+        Promise.all(_promises).then(print_results);
 
+      }catch(err){
+        
+          complete(err)
+      }
     })
 
   // Complete
 
-  function complete(){
+  function complete(err){
 
-    // Set some global variables
+    if(err) return callback(err, null) 
 
     callback(null, _results) 
 
@@ -118,32 +122,39 @@ mod.search = function(directory, callback){
 
   function clean_up_todos(results, callback){
 
-    // Loop through all results from promises
+    try{
+      // Loop through all results from promises
 
-    for(var _i in results){
+      for(var _i in results){
 
-      // Only display results with todos
+        // Only display results with todos
 
-      if(results[_i].todos.length)
-          _results.push(results[_i])
-    }
-    // TODO: clean up the emtpy todos and then callback
+        if(results[_i].todos.length)
+            _results.push(results[_i])
+      } 
 
-    callback()
+      callback(null)
 
+    }catch(err){
+
+      callback(err)
+
+    } 
   }
 
   // Get todos
 
   function get_todos(file_name){
 
-      return new Promise(function(resolve, reject) {
+    return new Promise(function(resolve, reject) {
 
-        // Set global variables 
+      // Set global variables 
 
-        var _all_items  = []
-          , _item_todos = []
-          , _index      = 0
+      var _all_items  = []
+        , _item_todos = []
+        , _index      = 0
+
+      try{
 
         lr.eachLine(file_name, function(line, last) {
 
@@ -174,7 +185,7 @@ mod.search = function(directory, callback){
             _all_items  = {};
 
             _all_items  = {
-              file_name: file_name
+              file_name: path.relative("./", file_name)
             , todos: _item_todos
             };
 
@@ -187,8 +198,14 @@ mod.search = function(directory, callback){
 
           _index++;
         });
-    },function() {  
 
-    });
+      }catch(err){
+
+        // Always reject the promise if you encounter errors
+
+        reject(err);
+      }
+  
+    })
   }
 }

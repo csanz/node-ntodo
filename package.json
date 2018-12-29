@@ -8,7 +8,7 @@
     "utils"
   ],
   "author": "Christian Sanz <chrissanz@chrissanz.com>",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -30,7 +30,7 @@
   "directories": {
     "test": "./test"
   },
-  "main": "./bin/ntodo",
+  "main": "./bin/app.js",
   "bin": {
     "ntodo": "./bin/cli.js"
   },

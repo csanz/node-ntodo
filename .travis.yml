@@ -3,5 +3,11 @@ stages:
   - lint # lint code and docs
   - test # all tests
 
-# defaults
 language: node_js
+branches:
+  only:
+    - master
+notifications:
+  email:
+    - chrissanz@gmail.com
+  irc: "irc.freenode.org#ntodo"
