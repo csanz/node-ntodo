@@ -1,4 +1,4 @@
-# ntodo 
+# ntodo [![Build Status](https://travis-ci.org/csanz/node-ntodo.svg?branch=master)](https://travis-ci.org/csanz/node-ntodo)
 
 A simple CLI TODO parser for the lazy coder
 
