@@ -12,7 +12,13 @@ A simple CLI TODO parser for the lazy coder
 
 ## Usage
 
-There are two ways to use ntodo: through the command line or by using ntodo in your code. **Note:** If you are using ntodo _programatically_ see example below.
+There are two ways to view TODOs: through the command line or by using ntodo in your code. **Note:** If you are using ntodo _programatically_ see example below.
+
+To add new TODOs it is super easy. Simply add a TODO to your source code
+
+    // TODO: new todo text here 
+
+Then pull them via your terminal or code. It will output a summary of TODOs with the line number of where to find it. You can also track general TODOs inside .todo.js at the root of your project. 
 
 ### Command Line Usage
 
