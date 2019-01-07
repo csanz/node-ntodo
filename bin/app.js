@@ -224,7 +224,7 @@ app.search = function(path_string, callback){
 
       logger.error(err, null);
 
-      complete(err)
+      error(err)
     }
 
   }

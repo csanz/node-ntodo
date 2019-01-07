@@ -19,8 +19,8 @@ describe('var ntodo = require("../bin/app");', function() {
 
         if (err) return done(err);
 
-        console.log("results[0].todos: ", results[0].todos.length)
-        console.log("results[0].fixme: ", results[0].fixme.length)
+        console.log("results[0].todos: \n", results[0].todos)
+        console.log("results[0].fixme: \n", results[0].fixme)
 
         assert.equal(results[0].todos.length, 5);
         assert.equal(results[0].fixme.length, 1);
