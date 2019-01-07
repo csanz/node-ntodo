@@ -13,7 +13,7 @@ describe('var ntodo = require("../bin/app")();', function() {
   describe('ntodo.search("./test/test.js", callback)', function() {
     it('it should return 5 TODOs and 1 FIXMEs', function(done) {
       
-      var ntodo = require('../bin/app')();
+      var ntodo = require('../bin/app');
 
       var results = (err, results) => {
 
