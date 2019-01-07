@@ -1,0 +1,19 @@
+{
+  "included_extensions": [
+    ".js"
+  , ".jade"
+  , ".stylus"
+  , ".py"
+  , ".java"
+  , ".cgi"
+  , ".pl"
+  , ".c"
+  , ".cc"
+  , ".h"
+  , ".ntodo"
+  ]
+, "ignored_folders": [
+    "node_modules"
+  , "deps"
+]
+}
