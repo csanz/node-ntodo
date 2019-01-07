@@ -9,7 +9,7 @@
 /* TODO: another todo */
 
 var assert = require('assert');
-describe('var ntodo = require("../bin/app")();', function() {
+describe('var ntodo = require("../bin/app");', function() {
   describe('ntodo.search("./test/test.js", callback)', function() {
     it('it should return 5 TODOs and 1 FIXMEs', function(done) {
       
