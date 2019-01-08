@@ -5,11 +5,10 @@ stages:
 
 language: node_js
 node_js:
-  - "7"
+  - "8"
 branches:
   only:
     - master
 notifications:
   email:
     - chrissanz@gmail.com
-  irc: "irc.freenode.org#ntodo"

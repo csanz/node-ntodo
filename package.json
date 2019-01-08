@@ -1,8 +1,9 @@
 {
   "name": "ntodo",
-  "description": "A simple CLI TODO parser for the lazy coder",
+  "description": "A simple CLI TODO/FIXME parser for the lazy coder",
   "keywords": [
     "todo",
+    "fixme",
     "cli",
     "github",
     "utils"

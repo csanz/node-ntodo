@@ -243,7 +243,7 @@ app.search = function(path_string, callback){
     // Display results from promises
 
     var process_results = (results) => {
-        clean_up_results(results)
+        clean_up_results(results, complete)
     }
 
     logger.info("%s file(s) loaded".black.bgWhite, _promises.length); 
@@ -252,8 +252,15 @@ app.search = function(path_string, callback){
 
     Promise.all(_promises)
            .then(process_results)
-           .catch(error)
-           .finally(display);
+           .catch(onError)
+           //.finally(onFinally);
+  }
+
+  function complete(err){
+
+    if(err) return onError(err);
+
+    callback(null, _results);
 
   }
 
@@ -261,20 +268,18 @@ app.search = function(path_string, callback){
   // Pass error
   //----------------------//
 
-  function error(err){
+  function onError(err){
     callback(err, null) 
   }
 
-  //----------------------//
-  // Display
-  //----------------------//
+  // //----------------------//
+  // // onFinally
+  // //----------------------//
 
-  function display(){
+  // function onFinally(){
 
-    logger.info("completed search");
-
-    callback(null, _results) 
-  }
+  //   logger.info("completed search");
+  // }
 
   //----------------------//
   // Clean up results
@@ -295,13 +300,13 @@ app.search = function(path_string, callback){
            _results.push(results[_i])
       } 
 
-      //callback(null)
+      callback(null)
 
     }catch(err){
 
       logger.error(err);
 
-      //callback(err)
+      callback(err)
 
       throw err;
 
