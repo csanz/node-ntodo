@@ -1,5 +1,5 @@
 {
-  "included_extensions": [
+  "includedExtensions": [
     ".js"
   , ".jade"
   , ".stylus"
@@ -12,7 +12,7 @@
   , ".h"
   , ".ntodo"
   ]
-, "ignored_folders": [
+, "ignoredFolders": [
     "node_modules"
   , "deps"
 ]

@@ -6,8 +6,6 @@ utils.showResults = function (results, pathString) {
   loadTemplate(results, pathString)
 
   function loadTemplate (results) {
-    var _counter = 0
-
     var _todosCounter = 0
 
     var _fixmesCounter = 0
@@ -15,40 +13,36 @@ utils.showResults = function (results, pathString) {
     // Iterate through results
 
     for (var _result in results) {
+      console.log('Inside %s'.cyan, results[_result].fileName)
+
+      // Itereate through fixmes
+
+      console.log('_TODO_'.gray)
+
+      for (var _fixme in results[_result].fixme) {
+        // Print out the TODO
+
+        console.log('      \\_ Line %s: %s'.yellow
+          , results[_result].fixme[_fixme].lineNumber
+          , results[_result].fixme[_fixme].line)
+        _fixmesCounter++
+      }
+
       // Itereate through todos
 
       for (var _todo in results[_result].todos) {
         // Print out the TODO
 
-        console.log('Line %s: %s'.cyan
-          , results[_result].todos[_todo].line_number
+        console.log('      \\_ Line %s: %s'.gray
+          , results[_result].todos[_todo].lineNumber
           , results[_result].todos[_todo].line)
-
-        _counter++
         _todosCounter++
       }
-
-      // Itereate through fixmes
-
-      for (var _fixme in results[_result].fixme) {
-        // Print out the TODO
-
-        console.log('Line %s: %s'.cyan
-          , results[_result].fixme[_fixme].line_number
-          , results[_result].fixme[_fixme].line)
-
-        _counter++
-        _fixmesCounter++
-      }
-
-      // Display the file and full path
-
-      console.log('\n>> (%s) Inside: %s\n'.yellow, _counter, results[_result].file_name)
     }
 
     // Display summary results
 
-    console.log('  Found %s TODOs and %s FIXMEs\n'.gray, _todosCounter, _fixmesCounter)
+    console.log('\nFound %s TODOs and %s FIXMEs inside: '.gray + '\n%s\n'.yellow, _todosCounter, _fixmesCounter, pathString)
   }
 }
 

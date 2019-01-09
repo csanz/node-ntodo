@@ -30,9 +30,9 @@ var _fileCounter = 0 // file counter
 
 // Constants and configurations
 
-const _includedExtensions = conf.included_extensions
+const _includedExtensions = conf.includedExtensions
 
-// const _ignored_folders = conf.ignored_folders
+// const _ignored_folders = conf.ignoredFolders
 
 // Allocate app
 
@@ -57,7 +57,7 @@ app.search = function (pathString, callback) {
 
     if (file.is_zero_byte(pathString)) { return console.log('\nThe file was zero bytes\n>> %s\n'.red, pathString) }
 
-    logger.info(colors.bgWhite('scan file: %s'), pathString)
+    logger.info(colors.bgWhite('Searching single file: %s'), pathString)
 
     // Add single file
 
@@ -74,7 +74,7 @@ app.search = function (pathString, callback) {
     // Walk file system and generate file list
     // After generating the list pull todos
 
-    logger.info('searching path: %s'.black.bgWhite, pathString)
+    logger.info('Searching path: %s'.gray, pathString)
 
     generateFileList(pathString)
   }
@@ -88,10 +88,14 @@ app.search = function (pathString, callback) {
 
     const filterFunction = item => {
       const basename = path.basename(item)
-      return basename === '.' ||
-             basename[0] !== '.' ||
-             basename !== 'node_modules' ||
-             basename !== 'deps'
+
+      var _excludedFolder = !!((basename === 'node_modules' ||
+                         basename === 'deps'))
+
+      var _otherExclusions = !!((basename === '.' ||
+                          basename[0] !== '.'))
+
+      return (!_otherExclusions || !_excludedFolder)
     }
 
     // Exclude bad files
@@ -99,7 +103,7 @@ app.search = function (pathString, callback) {
     const excludeBadFiles = through2.obj(function (item, enc, next) {
       // If this is not a zero byte file add the file
 
-      if (!item.stats.size === 0) this.push(item)
+      if (item.stats.size !== 0) this.push(item)
 
       next()
     })
@@ -126,6 +130,8 @@ app.search = function (pathString, callback) {
 
       next()
     })
+
+    logger.info('Start folder walk on %s directory'.gray, directory)
 
     // Start the walk
 
@@ -177,6 +183,11 @@ app.search = function (pathString, callback) {
       .on('end', function () {
       // Initialize search
 
+        if (!_fileCounter) {
+          return console.log('\nNo files loaded, please check '.yellow +
+           'the extensions are supported: \n%s\n'.yellow, _includedExtensions.join(' ').white)
+        }
+
         initSearch()
       })
   }
@@ -186,16 +197,11 @@ app.search = function (pathString, callback) {
   // ----------------------//
 
   function initSearch () {
-    logger.info('included extensions:', _includedExtensions)
+    logger.info('included extensions:'.green, JSON.stringify(_includedExtensions))
 
-    logger.info('ended file scan with %s', _fileCounter, 'file(s)')
+    logger.info('ended file scan with %s'.gray, _fileCounter, 'file(s)')
 
     // If you have no files at this point let the user know
-
-    if (!_fileCounter) {
-      return console.log('\nNo files loaded, please check '.yellow +
-       'the extensions are supported: \n%s\n'.yellow, _includedExtensions.join(' ').white)
-    }
 
     try {
       // Load items
@@ -321,14 +327,14 @@ app.search = function (pathString, callback) {
             if (_match[0].indexOf('FIXME') !== -1) {
               _itemFixme.push({
                 line: _line.trim(),
-                line_number: _index
+                lineNumber: _index
               })
             }
 
             if (_match[0].indexOf('TODO') !== -1) {
               _itemTodos.push({
                 line: _line.trim(),
-                line_number: _index
+                lineNumber: _index
               })
             }
           }

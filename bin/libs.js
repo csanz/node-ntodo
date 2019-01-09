@@ -1,5 +1,3 @@
-var colors = require('colors')
-
 var fs = require('fs-extra')
 
 var libs = exports = module.exports = {}
@@ -71,15 +69,15 @@ libs.logger = (function () {
     },
     info: function () {
       var args = Array.prototype.slice.call(arguments)
-      show(colors.gray('info'), args)
+      show('info', args)
     },
     warn: function () {
       var args = Array.prototype.slice.call(arguments)
-      show(colors.yellow('warn'), args)
+      show('warn', args)
     },
     error: function () {
       var args = Array.prototype.slice.call(arguments)
-      show(colors.red('error'), args)
+      show('error', args)
     }
   }
 
