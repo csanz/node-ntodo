@@ -312,7 +312,7 @@ app.search = function (pathString, callback) {
 
           var _line = `${line}`
 
-          // Search 
+          // Search
 
           var _formula = /(\/\/|\/\*).*(TODO|FIXME).*?/g
           var _regex = new RegExp(_formula)
