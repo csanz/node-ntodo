@@ -2,7 +2,7 @@
 
 A simple to use CLI TODO/FIXME parser for the lazy coder
 
-![Screenshot](https://raw.githubusercontent.com/csanz/node-ntodo/master/misc/sample.png?c=5)
+![Screenshot](https://raw.githubusercontent.com/csanz/node-ntodo/master/misc/ntodo.png?c=5)
 
 The much much simpler version is to just use git grep
 

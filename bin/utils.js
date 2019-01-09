@@ -24,7 +24,6 @@ utils.showResults = function (results, pathString) {
       console.log('_TODO_'.gray)
 
       for (var _fixme in results[_result].fixme) {
-        // Print out the TODO
 
         console.log('      \\_ Line %s: %s'.red
           , results[_result].fixme[_fixme].lineNumber
@@ -35,7 +34,6 @@ utils.showResults = function (results, pathString) {
       // Itereate through todos
 
       for (var _todo in results[_result].todos) {
-        // Print out the TODO
 
         console.log('      \\_ Line %s: %s'.gray
           , results[_result].todos[_todo].lineNumber
