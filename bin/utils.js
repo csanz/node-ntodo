@@ -5,6 +5,10 @@ var utils = exports = module.exports = {}
 utils.showResults = function (results, pathString) {
   loadTemplate(results, pathString)
 
+  // ----------------------//
+  // Template
+  // ----------------------//
+
   function loadTemplate (results) {
     var _todosCounter = 0
 

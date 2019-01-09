@@ -1,6 +1,6 @@
 // load libs
 
-var klaw = require('klaw')
+var walker = require('klaw')
 
 var through2 = require('through2')
 
@@ -135,7 +135,7 @@ app.search = function (pathString, callback) {
 
     // Start the walk
 
-    klaw(directory, {
+    walker(directory, {
       filter: filterFunction,
       depthLimit: -1,
       preserveSymlinks: false
