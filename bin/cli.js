@@ -1,130 +1,113 @@
 #!/usr/bin/env node
 
-var os      = require('os')
-  , ntodo   = require('./app')
-  , utils   = require('./utils')
-  , logger  = require('./libs').logger
-  , opt     = require('optimist').argv
-  , colors  = require('colors')
-  , sys     = require('util')
-  , path    = require('path')
-  , resolve = require('path').resolve
+var ntodo = require('./app')
 
-// Set global variables 
+var utils = require('./utils')
 
-var _interval    = null
-  , _path_string = null
-  , _options     = {
-      is_logging : false
-    , is_verbose : false
-  }
-    
-/////////////////////////
+var logger = require('./libs').logger
+
+var opt = require('optimist').argv
+
+var colors = require('colors')
+
+// Set global variables
+
+var _pathString = null
+
+var _options = {
+  isLogging: false,
+  isVerbose: false
+}
+
 // Run the app
 
-run = function() {
-
-  opt.help    = opt.help    || opt.h;
-  opt.path    = opt.path    || opt.p;
-  opt.file    = opt.file    || opt.f;
-  opt.logging = opt.logging || opt.l;
-  opt.verbose = opt.verbose || opt.v;
+var run = function () {
+  opt.help = opt.help || opt.h
+  opt.path = opt.path || opt.p
+  opt.file = opt.file || opt.f
+  opt.logging = opt.logging || opt.l
+  opt.verbose = opt.verbose || opt.v
 
   // Empty, run search
 
-  if(!opt._.length &&
+  if (!opt._.length &&
      !opt.help &&
-     !opt.path){
+     !opt.path) {
+    search('./')
 
-    search("./")
-
-    return;
+    return
   }
 
   // Only one arument, assume is a path
 
-  if(opt._ &&
+  if (opt._ &&
     !opt.path &&
-    !opt.help){
-
+    !opt.help) {
     search(opt._[0])
 
-    return;
-  } 
-
-  return;
+    return
+  }
 
   // Path option, run with path
 
-  if(opt.path){
-
-    if(opt.path == true) 
-      return logger.warn("missing path".yellow)
+  if (opt.path) {
+    if (opt.path === true) {
+      return logger.warn(colors.yellow('missing path'))
+    }
 
     search(opt.path)
-
-    return;
   }
 
   // Show help
 
-  if(opt.help){
-
+  if (opt.help) {
     utils.show_help()
-
-    return;
   }
 
-  //----------------------//
+  // ----------------------//
   // Search
-  //----------------------//
+  // ----------------------//
 
-  function search(path_string){
-
-    _path_string = path_string;
+  function search (pathString) {
+    _pathString = pathString
 
     // Set options
 
-    _options.is_logging = 
-      (opt.logging) ? true : false
+    _options.isLogging =
+      !!(opt.logging)
 
-    _options.is_verbose = 
-      (opt.verbose) ? true : false
+    _options.isVerbose =
+      !!(opt.verbose)
 
     // Initialize ntodo app
 
     ntodo.init(_options)
 
-    //utils.show_status(true);
+    // utils.show_status(true);
 
     ntodo.search(
-        _path_string
-      , complete);  
-
+      _pathString
+      , complete)
   }
 
-  //----------------------//
-  // Complete 
-  //----------------------//
+  // ----------------------//
+  // Complete
+  // ----------------------//
 
-  function complete(err, results){
+  function complete (err, results) {
+    // utils.show_status(false);
 
-    //utils.show_status(false);
-
-    if(err) return logger.error(err)
+    if (err) return logger.error(err)
 
     // TODO: Add the ability to remove the TODO line... more options
     // TODO: Add the ability to connect your todo app or Github
 
-    utils.show_screen_header();
+    utils.showScreenHeader()
 
-    utils.show_results(
-          results
-        , _path_string);
-
+    utils.showResults(
+      results
+      , _pathString)
   }
 }
 
-run();
-
-
+run()

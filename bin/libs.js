@@ -1,116 +1,97 @@
 var colors = require('colors')
-  , fs     = require('fs-extra');
 
-var libs = exports = module.exports = {};
+var fs = require('fs-extra')
 
-/////////////////////////
-// File system 
+var libs = exports = module.exports = {}
 
-libs.file = function(){
+// File system
 
+libs.file = (function () {
   return {
-    is_file: function(path_string){
-
+    is_file: function (pathString) {
       // If is not directory return true
 
-      return !fs.lstatSync(path_string).isDirectory()
-    }
-  , is_zero_byte: function(path_string){
-
+      return !fs.lstatSync(pathString).isDirectory()
+    },
+    is_zero_byte: function (pathString) {
       // If zero bytes return true
 
-      return !fs.lstatSync(path_string).size
+      return !fs.lstatSync(pathString).size
+    }
   }
-  }
+}())
 
-}();
-
-/////////////////////////
 // Parser
 
-libs.parser = function(){
-
+libs.parser = function () {
   // Set options
 
   var _options = {
-    regex : null
+    regex: null
   }
 
   return {
 
-    init: function(options){
+    init: function (options) {
 
-    }
-  , find: function(string, regex){
+    },
+    find: function (string, regex) {
+      if (regex) _options.regex = regex
 
-      if(regex) _options.regex = regex;
-
-      var _regexobject = new RegExp(_options.regex);
-      var _test        = _regexobject.test(_line);
-      var _match       = _line.match(_regexobject);
+      var _regexObject = new RegExp(_options.regex)
+      var _test = _regexObject.test(string)
+      var _match = string.match(_regexObject)
 
       return {
-        match : _match
-      , test  : _test
+        match: _match,
+        test: _test
       }
     }
   }
-
 }
 
-/////////////////////////
-// Logger 
+/// //////////////////////
+// Logger
 
-libs.logger = function () {
-
+libs.logger = (function () {
   // Set options
 
   var _options = {
-    is_logging : false
-  , is_verbose : false
+    isLogging: false,
+    isVerbose: false
   }
 
   // Return and bind logging functions
 
-  // TODO: would be nice to add color coding. 
+  // TODO: would be nice to add color coding.
 
   return {
-    init: function(options){
+    init: function (options) {
       _options = options
-    }
-  , info: function() {
-        var args = Array.prototype.slice.call(arguments);
-        show('info', args)
-
-    }
-  , warn: function() {
-        var args = Array.prototype.slice.call(arguments);
-        show('warn', args)
-    }
-  , error: function() {
-        var args = Array.prototype.slice.call(arguments);
-        show('error', args)
+    },
+    info: function () {
+      var args = Array.prototype.slice.call(arguments)
+      show(colors.gray('info'), args)
+    },
+    warn: function () {
+      var args = Array.prototype.slice.call(arguments)
+      show(colors.yellow('warn'), args)
+    },
+    error: function () {
+      var args = Array.prototype.slice.call(arguments)
+      show(colors.red('error'), args)
     }
   }
 
   // Show messages
 
-  function show(method, args){
-
-    if(_options){
-
+  function show (method, args) {
+    if (_options) {
       // if(_options.is_logging){
       //   // TODO: add text logging here
       // }
 
-      if(_options.is_verbose) 
-        console[method].apply(console, args);
-      
-    } 
+      if (_options.isVerbose) { console[method].apply(console, args) }
+    }
   }
-}();
-
-
-
-
-
+}())

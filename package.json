@@ -38,6 +38,9 @@
   },
   "scripts": {
     "start": "node bin/cli.js",
-    "test": "mocha"
+    "test": "standard && mocha ./test/test.js"
+  },
+  "devDependencies": {
+    "standard": "^12.0.1"
   }
 }
