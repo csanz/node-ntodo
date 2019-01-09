@@ -40,6 +40,8 @@ libs.parser = function () {
       var _test = _regexObject.test(string)
       var _match = string.match(_regexObject)
 
+      // FIXME: make the regex more robust
+
       return {
         match: _match,
         test: _test

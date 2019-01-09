@@ -26,7 +26,7 @@ utils.showResults = function (results, pathString) {
       for (var _fixme in results[_result].fixme) {
         // Print out the TODO
 
-        console.log('      \\_ Line %s: %s'.yellow
+        console.log('      \\_ Line %s: %s'.red
           , results[_result].fixme[_fixme].lineNumber
           , results[_result].fixme[_fixme].line)
         _fixmesCounter++

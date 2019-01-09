@@ -85,7 +85,8 @@ var run = function () {
 
     // utils.show_status(true);
 
-    logger.info(colors.gray('options: %s'), JSON.stringify(_options))
+    logger.info(colors.gray('options: %s'),
+       JSON.stringify(_options))
 
     ntodo.search(
       _pathString
@@ -112,4 +113,4 @@ var run = function () {
   }
 }
 
-run()
+run() // Run the cli
