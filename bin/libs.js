@@ -50,7 +50,6 @@ libs.parser = function () {
   }
 }
 
-/// //////////////////////
 // Logger
 
 libs.logger = (function () {
