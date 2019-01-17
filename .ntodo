@@ -17,3 +17,5 @@
 // TODO: create git-ntodo lib for running grep + ntodo command together with git
 // TODO: create sublime error nodejs pluggin, when error happen, you can simple type err and it opens up the file inside sublime (set err env variable to sublime path name and line)
 // TODO: create a history file, keep history of recent calls (fifo) this way you can just do ntodo (NUMBER) and run the same call/exec
+// TODO: integrate with standard... so you pipe standard into notodo and add all the TODOs into the code. then use ntodo to load up sublime
+// TODO: Save standard todos // STANDARD: so you can find them faster. or // TODO(STANDARD):  
