@@ -29,8 +29,14 @@ describe('var ntodo = require("../bin/app");', function () {
 
         done()
       }
-
-      ntodo.search('./test/test.js', results)
+      var options = {
+        addedBy: 'all',
+        dateOrder: 'all',
+        entryType: 'all',
+        isVerbose: false,
+        isDebug: false
+      }
+      ntodo.search('./test/test.js', options, results)
     })
   })
 })

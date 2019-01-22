@@ -10,7 +10,6 @@
   , ".c"
   , ".cc"
   , ".h"
-  , ".ntodo"
   ]
 , "ignoredFolders": [
     "node_modules"

@@ -27,7 +27,8 @@
     "async": "3.0.1-0",
     "line-reader": "0.4.0",
     "fs-extra": "^7.0.1",
-    "ntodo": "0.1.2"
+    "ntodo": "0.1.2",
+    "commander": "2.19.0"
   },
   "directories": {
     "test": "./test"

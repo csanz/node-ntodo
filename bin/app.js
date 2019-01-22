@@ -14,9 +14,15 @@ var logger = require('./libs').logger
 
 var file = require('./libs').file
 
+var utils = require('./utils')
+
 var conf = require('./conf.json')
 
 // Set some global variables
+
+var _scriptName = path.basename(__filename)
+
+var _pathString = null
 
 var _items = []
 
@@ -24,7 +30,14 @@ var _promises = []
 
 var _results = []
 
-var _options = {}
+var _isDebug = false
+
+var _options = {
+  addedBy: 'all',
+  dateOrder: 'desc',
+  entryType: 'all',
+  isVerbose: false
+}
 
 var _fileCounter = 0 // file counter
 
@@ -40,48 +53,50 @@ var app = {}
 
 module.exports = app
 
-// Init
-
-app.init = function (options) {
-  _options = options
-  logger.init(_options)
-}
-
 // Start search
 
-app.search = function (pathString, callback) {
-  // Check if this is a file or directory
+app.search = function (pathString, options, callback) {
+  // Set options
 
-  if (file.is_file(pathString)) {
-    // Check if the file is zero bytes first
+  _options.addedBy = options.addedBy
+  _options.dateOrder = options.dateOrder
+  _options.entryType = options.entryType
+  _isDebug = options.isDebug
 
-    if (file.is_zero_byte(pathString)) { return console.log('\nThe file was zero bytes\n>> %s\n'.red, pathString) }
+  // Set global
 
-    logger.info(colors.bgWhite('Searching single file: %s'), pathString)
+  _pathString = (pathString || options.pathString)
 
-    // Add single file
+  // If single file
 
-    _items.push(pathString)
+  if (file.is_file(_pathString)) {
+    if (_isDebug) utils.showDebug(colors.gray('Single File:'), _pathString)
 
-    // Increase file counter
+    // Check if zero byte
+
+    if (file.is_zero_byte(_pathString)) {
+      return console.log(colors.red('\nThe file was zero bytes\n>> %s\n'), _pathString)
+    }
+
+    // Continue search of single file
+
+    logger.info(colors.bgWhite('Searching single file: %s'), _pathString)
+
+    _items.push(_pathString)
 
     _fileCounter++
 
-    // Initialize the search
-
-    initSearch()
+    searchForTodos()
   } else {
-    // Walk file system and generate file list
-    // After generating the list pull todos
+    // If directory
+    if (_isDebug) utils.showDebug(colors.gray('%s::Searching Directory:%s'), _scriptName, _pathString)
 
-    logger.info('Searching path: %s'.gray, pathString)
+    logger.info('Searching path: %s'.gray, _pathString)
 
-    generateFileList(pathString)
+    generateFileList(_pathString)
   }
 
-  // ----------------------//
-  // Walk directories
-  // ----------------------//
+  // Generate file list / walk directories
 
   function generateFileList (directory) {
     // TODO: move to config file, list of filters
@@ -89,11 +104,9 @@ app.search = function (pathString, callback) {
     const filterFunction = item => {
       const basename = path.basename(item)
 
-      var _excludedFolder = !!((basename === 'node_modules' ||
-                         basename === 'deps'))
+      var _excludedFolder = !!((basename === 'node_modules' || basename === 'deps'))
 
-      var _otherExclusions = !!((basename === '.' ||
-                          basename[0] !== '.'))
+      var _otherExclusions = !!((basename === '.' || basename[0] !== '.'))
 
       return (!_otherExclusions || !_excludedFolder)
     }
@@ -181,54 +194,56 @@ app.search = function (pathString, callback) {
     // End of search
 
       .on('end', function () {
-      // Initialize search
+        if (_isDebug) utils.showDebug(colors.gray('%s::Directory Walk Ended with %s items'), _scriptName, _fileCounter)
+
+        // Initialize search
 
         if (!_fileCounter) {
           return console.log('\nNo files loaded, please check '.yellow +
            'the extensions are supported: \n%s\n'.yellow, _includedExtensions.join(' ').white)
         }
 
-        initSearch()
+        searchForTodos()
       })
   }
 
-  // ----------------------//
-  // Initialize todos
-  // ----------------------//
+  // Search for todos
 
-  function initSearch () {
-    logger.info('included extensions:'.green, JSON.stringify(_includedExtensions))
+  function searchForTodos () {
+    if (_isDebug) utils.showDebug(colors.gray('%s::Supported Extensions (conf.json):\n'), _scriptName, colors.cyan(_includedExtensions))
 
-    logger.info('ended file scan with %s'.gray, _fileCounter, 'file(s)')
+    logger.info('included extensions:', JSON.stringify(_includedExtensions))
 
-    // If you have no files at this point let the user know
+    logger.info('ended file scan with %s files(s)', _fileCounter)
 
     try {
-      // Load items
+      // Load files and pull todos
 
-      load(_items)
+      loadFiles(_items)
     } catch (err) {
       logger.error(err, null)
+
       onError(err)
     }
   }
 
-  // ----------------------//
-  // Load data
-  // ----------------------//
+  // Load files and pull todos
 
-  function load (items) {
+  function loadFiles (items) {
     // Load Promises
 
     for (var _item in _items) { _promises.push(getResults(_items[_item])) }
 
+    if (_isDebug) utils.showDebug(colors.gray('%s::%s file(s) loaded for search'), _scriptName, _promises.length)
+
+    logger.info('%s file(s) loaded for search', _promises.length)
+
     // Display results from promises
 
     var processResults = (results) => {
+      if (_isDebug) utils.showDebug(colors.gray('%s::Completed search with %s items'), _scriptName, results.length)
       cleanUpResults(results, complete)
     }
-
-    logger.info('%s file(s) loaded'.black.bgWhite, _promises.length)
 
     // Handle all promises
 
@@ -240,29 +255,19 @@ app.search = function (pathString, callback) {
 
   function complete (err) {
     if (err) return onError(err)
+
+    if (_isDebug) utils.showDebug(colors.gray('%s::Completed filter with %s items'), _scriptName, _results.length)
+
     callback(null, _results)
   }
 
-  // ----------------------//
-  // Pass error
-  // ----------------------//
+  // On error
 
   function onError (err) {
     callback(err, null)
   }
 
-  // //----------------------//
-  // // onFinally
-  // //----------------------//
-
-  // function onFinally(){
-
-  //   logger.info("completed search");
-  // }
-
-  // ----------------------//
-  // Clean up results
-  // ----------------------//
+  // Clean up
 
   function cleanUpResults (results, callback) {
     try {
@@ -286,9 +291,7 @@ app.search = function (pathString, callback) {
     }
   }
 
-  // ----------------------//
   // Get results
-  // ----------------------//
 
   function getResults (fileName) {
     return new Promise(function (resolve, reject) {

@@ -1,22 +1,33 @@
+var colors = require('colors')
+
 var utils = exports = module.exports = {}
 
 // Show results
 
-utils.showResults = function (results, pathString) {
-  loadTemplate(results, pathString)
+utils.showResults = function (isFlat, results, pathString) {
+  var _results = results
+  var _pathString = pathString
 
-  // ----------------------//
-  // Template
-  // ----------------------//
+  if (!isFlat) {
+    // Load visual template
 
-  function loadTemplate (results) {
+    loadVisualTemplate()
+  } else {
+    // Load flat tempalte
+
+    loadFlatTemplate()
+  }
+
+  // Visual view
+
+  function loadVisualTemplate () {
     var _todosCounter = 0
 
     var _fixmesCounter = 0
 
     // Iterate through results
 
-    for (var _result in results) {
+    for (var _result in _results) {
       console.log('Inside %s'.cyan, results[_result].fileName)
 
       // Itereate through fixmes
@@ -42,29 +53,77 @@ utils.showResults = function (results, pathString) {
 
     // Display summary results
 
-    console.log('\nFound %s TODOs and %s FIXMEs inside: '.gray + '\n%s\n'.yellow, _todosCounter, _fixmesCounter, pathString)
+    console.log('\nFound %s TODOs and %s FIXMEs inside: '.gray + '\n%s\n'.yellow, _todosCounter, _fixmesCounter, _pathString)
+  }
+
+  // Flat view
+
+  function loadFlatTemplate () {
+    var _todosCounter = 0
+
+    var _fixmesCounter = 0
+
+    var _fileName = null
+
+    // Iterate through results
+
+    for (var _result in _results) {
+      _fileName = results[_result].fileName
+
+      // Itereate through fixmes
+
+      for (var _fixme in results[_result].fixme) {
+        console.log(_fileName + results[_result].fixme[_fixme].lineNumber, ' ', results[_result].fixme[_fixme].line)
+        _fixmesCounter++
+      }
+
+      // Itereate through todos
+
+      for (var _todo in results[_result].todos) {
+        console.log(_fileName + results[_result].todos[_todo].lineNumber, ' ', results[_result].todos[_todo].line)
+        _todosCounter++
+      }
+    }
+
+    // Display summary results
+
+    console.log('\nFound %s TODOs and %s FIXMEs inside: '.gray + '\n%s\n'.yellow, _todosCounter, _fixmesCounter, _pathString)
+  }
+}
+// Show screen header
+
+utils.showBanner = function (isFlat) {
+  if (!isFlat) {
+    console.log(colors.gray(' ||'))
+    console.log(colors.gray(' ||'), colors.gray.italic(' ', '░    ░ ░░░░░ ░░░░░ ░░░░  ░░░░░'))
+    console.log(colors.gray(' ||'), colors.gray.italic(' ', '░ ░  ░   ░   ░   ░ ░   ░ ░   ░'))
+    console.log(colors.gray(' ||'), colors.gray.italic(' ', '░  ░ ░   ░   ░   ░ ░   ░ ░   ░'))
+    console.log(colors.gray(' ||'), colors.gray.italic(' ', '░   ░░   ░   ░   ░ ░   ░ ░   ░'))
+    console.log(colors.gray(' ||'), colors.gray.italic(' ', '░    ░   ░   ░░░░░ ░░░░  ░░░░░'))
+    console.log(colors.gray(' ||'))
+    console.log(colors.gray(' ||'), ' ', colors.gray('Start to clean up your TODOs and FIXMEs'))
+    console.log(colors.gray(' ||'))
+    console.log()
+  } else {
+    console.log(colors.gray('\nNTODO ~ Start to clean up your TODOs and FIXMEs:\n'))
   }
 }
 
-// Show screen header
+// Show missing values
 
-utils.showScreenHeader = function (query) {
-  var _query = query
-  if (!_query) _query = 'TODOs & FIXMEs'
-  console.log('\n\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\'.gray)
-  console.log('\\\\\\\\\\\\\\  Your %s:'.gray, _query)
-  console.log('\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n'.gray)
+utils.showMissingValues = function (values) {
+  console.log(colors.red.bold('\nMissing Values:\n'))
+
+  for (var i = 0; i < values.length; i++) {
+    console.log(colors.red(' - ' + values[i]))
+  }
+
+  console.log(colors.red('\nOperation halted, please fix and try again\n'))
 }
 
-// Show help
-
-utils.showHelp = function () {
-  console.log('\nntodo <PATH>\n'.cyan)
-  console.log('\tExamples:'.white.bold)
-  console.log('\t\tntodo .'.cyan)
-  console.log('\t\tntodo ../'.cyan)
-  console.log('\t\tntodo -p ../'.cyan)
-  console.log('\n')
+utils.showDebug = function () {
+  var args = Array.prototype.slice.call(arguments)
+  console.info.apply(console, args)
 }
 
 // Show status
