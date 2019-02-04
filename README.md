@@ -1,4 +1,4 @@
-# ntodo [![Build Status](https://travis-ci.org/csanz/node-ntodo.svg?branch=master)](https://travis-ci.org/csanz/node-ntodo)
+# ntodo [![Build Status](https://travis-ci.org/csanz/ntodo.svg?branch=master)](https://travis-ci.org/csanz/ntodo)
 
 A simple to use CLI TODO/FIXME parser for the lazy coder
 
