@@ -32,7 +32,7 @@ utils.showResults = function (isFlat, results, pathString) {
 
       // Itereate through fixmes
 
-      console.log('_TODO_'.gray)
+      console.log('_TODO_'.white.bold)
 
       for (var _fixme in results[_result].fixme) {
         console.log('      \\_ Line %s: %s'.red
@@ -44,7 +44,7 @@ utils.showResults = function (isFlat, results, pathString) {
       // Itereate through todos
 
       for (var _todo in results[_result].todos) {
-        console.log('      \\_ Line %s: %s'.gray
+        console.log('      \\_ Line %s: %s'.white
           , results[_result].todos[_todo].lineNumber
           , results[_result].todos[_todo].line)
         _todosCounter++
@@ -53,7 +53,7 @@ utils.showResults = function (isFlat, results, pathString) {
 
     // Display summary results
 
-    console.log('\nFound %s TODOs and %s FIXMEs inside: '.gray + '\n%s\n'.yellow, _todosCounter, _fixmesCounter, _pathString)
+    console.log('\nFound %s TODOs and %s FIXMEs inside: '.white.bold + '\n%s\n'.yellow, _todosCounter, _fixmesCounter, _pathString)
   }
 
   // Flat view
@@ -87,25 +87,25 @@ utils.showResults = function (isFlat, results, pathString) {
 
     // Display summary results
 
-    console.log('\nFound %s TODOs and %s FIXMEs inside: '.gray + '\n%s\n'.yellow, _todosCounter, _fixmesCounter, _pathString)
+    console.log('\nFound %s TODOs and %s FIXMEs inside: '.white.bold + '\n%s\n'.yellow, _todosCounter, _fixmesCounter, _pathString)
   }
 }
 // Show screen header
 
 utils.showBanner = function (isFlat) {
   if (!isFlat) {
-    console.log(colors.gray(' ||'))
-    console.log(colors.gray(' ||'), colors.gray.italic(' ', '░    ░ ░░░░░ ░░░░░ ░░░░  ░░░░░'))
-    console.log(colors.gray(' ||'), colors.gray.italic(' ', '░ ░  ░   ░   ░   ░ ░   ░ ░   ░'))
-    console.log(colors.gray(' ||'), colors.gray.italic(' ', '░  ░ ░   ░   ░   ░ ░   ░ ░   ░'))
-    console.log(colors.gray(' ||'), colors.gray.italic(' ', '░   ░░   ░   ░   ░ ░   ░ ░   ░'))
-    console.log(colors.gray(' ||'), colors.gray.italic(' ', '░    ░   ░   ░░░░░ ░░░░  ░░░░░'))
-    console.log(colors.gray(' ||'))
-    console.log(colors.gray(' ||'), ' ', colors.gray('Start to clean up your TODOs and FIXMEs'))
-    console.log(colors.gray(' ||'))
+    console.log(colors.white(' ||'))
+    console.log(colors.white(' ||'), colors.white.italic(' ', '░    ░ ░░░░░ ░░░░░ ░░░░  ░░░░░'))
+    console.log(colors.white(' ||'), colors.white.italic(' ', '░ ░  ░   ░   ░   ░ ░   ░ ░   ░'))
+    console.log(colors.white(' ||'), colors.white.italic(' ', '░  ░ ░   ░   ░   ░ ░   ░ ░   ░'))
+    console.log(colors.white(' ||'), colors.white.italic(' ', '░   ░░   ░   ░   ░ ░   ░ ░   ░'))
+    console.log(colors.white(' ||'), colors.white.italic(' ', '░    ░   ░   ░░░░░ ░░░░  ░░░░░'))
+    console.log(colors.white(' ||'))
+    console.log(colors.white(' ||'), ' ', colors.white('Start to clean up your TODOs and FIXMEs'))
+    console.log(colors.white(' ||'))
     console.log()
   } else {
-    console.log(colors.gray('\nNTODO ~ Start to clean up your TODOs and FIXMEs:\n'))
+    console.log(colors.cyan('\nNTODO ~ Start to clean up your TODOs and FIXMEs:\n'))
   }
 }
 

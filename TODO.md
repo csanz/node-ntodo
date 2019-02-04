@@ -13,7 +13,7 @@
 * Ingrate with Slack
 * Add bdget support with number of TODOs
 * Add date of when was the TODO was added to ntodo.db.json
-* *Add date when todo was added to git
+* Add date when todo was added to git
 * Send link to TODO/FIXME author if line is older than X (configurable)
 * Add the ability to open todo right from the terminal by typing in ntodo open (NUMBER), it will trigger sublime ./bin/app.js:180:0 create subl-ntodo for expanding subl with more ntodo commands. 
 * create git-ntodo lib for running grep + ntodo command together with git
@@ -22,3 +22,4 @@
 * integrate with standard... so you pipe standard into notodo and add all the TODOs into the code. then use ntodo to load up sublime
 * Save standard todos * STANDARD: so you can find them faster. or * TODO(STANDARD):  
 * Create file watch for folder you keep all your projects and track all TODOs/FIXMes, new and removed in order to generate a progress report/graph
+* Add the ability to grep and map the commadn to something like this "grep -rnw './bin' -e '$1'"
