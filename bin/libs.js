@@ -34,6 +34,7 @@ libs.parser = function () {
 
     },
     find: function (string, regex) {
+      
       if (regex) _options.regex = regex
 
       var _regexObject = new RegExp(_options.regex)

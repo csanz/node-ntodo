@@ -32,6 +32,8 @@ var _results = []
 
 var _isDebug = false
 
+var _prevline = null
+
 var _options = {
   addedBy: 'all',
   dateOrder: 'desc',
@@ -311,13 +313,31 @@ app.search = function (pathString, options, callback) {
         logger.info('file name: %s'.yellow, fileName)
 
         lr.eachLine(fileName, function (line, last) {
+
           // Set variables
 
           var _line = `${line}`
 
+          var _isCommentWrap = false
+
+          // Track previous line to see if you are inside comment wrap
+          // If you are, then you should look for todo/fixme
+
+          if(_prevline){
+            var _prevline_formula = /\/\*.*?/g
+            var _regex_prevline = new RegExp(_prevline_formula)
+            var _test_prevline = _regex_prevline.test(_prevline)
+            var _match_prevline = _prevline.match(_regex_prevline)
+            if (_test_prevline && _match_prevline) {
+              _isCommentWrap = true
+            }
+          }
+
           // Search
 
-          var _formula = /(\/\/|\/\*).*(TODO|FIXME).*?/g
+          var _formula = (_isCommentWrap) ? 
+                        /.*(TODO|FIXME).*?/g : 
+                        /(\/\/|\/\*).*(TODO|FIXME).*?/g
           var _regex = new RegExp(_formula)
           var _test = _regex.test(_line)
           var _match = _line.match(_regex)
@@ -365,6 +385,7 @@ app.search = function (pathString, options, callback) {
           }
 
           _index++
+          _prevline = _line
         })
       } catch (err) {
         logger.error(err)

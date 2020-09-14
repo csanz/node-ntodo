@@ -12,6 +12,10 @@ var it = mocha.it
 
 /* TODO: another todo */
 
+/*
+  TODO: Hello World
+*/
+
 var assert = require('assert')
 describe('var ntodo = require("../bin/app");', function () {
   describe('ntodo.search("./test/test.js", callback)', function () {
